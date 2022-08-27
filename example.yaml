@@ -1,0 +1,8 @@
+mode: ${PWD}
+cs_config_path: ./config.yaml
+format: |
+  {{ .TotalAlerts }}
+db_config:
+  log_level: info
+  type: sqlite
+  db_path: crowdsec.db

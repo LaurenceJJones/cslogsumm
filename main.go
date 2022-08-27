@@ -6,6 +6,7 @@ import (
 	"path"
 	"path/filepath"
 	"strings"
+	"text/template"
 
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
@@ -44,10 +45,10 @@ func main() {
 			}
 		},
 		Run: func(cmd *cobra.Command, args []string) {
-			log.Infof("%s is the config path", Config.DbConfig.Type)
-			if Config.CsConfig.DbConfig.Type != "" {
-				log.Infof("%s is the config path", Config.CsConfig.DbConfig.Type)
-			}
+			template, _ := template.New("").Parse(Config.Format)
+			b := new(strings.Builder)
+			template.Execute(b, Config.DbClient)
+			log.Info(b.String())
 		},
 	}
 	var cmdDocGen = &cobra.Command{

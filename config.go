@@ -4,6 +4,7 @@ import (
 	"os"
 
 	"github.com/crowdsecurity/crowdsec/pkg/csconfig"
+	"github.com/crowdsecurity/crowdsec/pkg/database"
 	"github.com/pkg/errors"
 	"gopkg.in/yaml.v2"
 )
@@ -14,6 +15,8 @@ type CslsConfig struct {
 	DbConfig     *csconfig.DatabaseCfg `yaml:"db_config,omitempty"`
 	CsConfigPath string                `yaml:"cs_config_path,omitempty"`
 	CsConfig     csconfig.Config       `yaml:"-"`
+	DbClient     *database.Client      `yaml:"-"`
+	Format       string                `yaml:"format,omitempty"`
 }
 
 func NewDefaultConfig(FilePath string) *CslsConfig {
@@ -23,6 +26,11 @@ func NewDefaultConfig(FilePath string) *CslsConfig {
 	readYAML(FilePath, &cfg)
 	if cfg.CsConfigPath != "" {
 		readYAML(cfg.CsConfigPath, &cfg.CsConfig)
+	}
+	if cfg.DbConfig != nil {
+		if dbClient, err := database.NewClient(cfg.DbConfig); err == nil {
+			cfg.DbClient = dbClient
+		}
 	}
 	return &cfg
 }
