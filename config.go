@@ -20,6 +20,8 @@ type CslsConfig struct {
 	CustomTemplates []CustomTemplate      `yaml:"custom_templates,omitempty"`
 	TemplateEngine  *TemplateEngine       `yaml:"-"`
 	LogLevel        string                `yaml:"log_level,omitempty"`
+	EmailSettings   *EmailSettings        `yaml:"email_settings,omitempty"`
+	EmailClient     *Email                `yaml:"-"`
 }
 
 func NewDefaultConfig(FilePath string) *CslsConfig {

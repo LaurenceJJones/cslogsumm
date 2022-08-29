@@ -59,6 +59,7 @@ func main() {
 			Config = NewDefaultConfig(ConfigFilePath)
 			setLogger(Config)
 			Config.TemplateEngine = DefaultTemplateEngine(Config)
+			Config.EmailClient = NewEmailClient(Config)
 		},
 		Run: func(cmd *cobra.Command, args []string) {
 			err := Config.TemplateEngine.Engine.ExecuteTemplate(os.Stdout, "Main", Config)

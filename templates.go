@@ -9,7 +9,7 @@ import (
 var (
 	DefaultTemplates = map[string]string{
 		"default": `I am default template
-		I also like to be multi lined`,
+I also like to be multi lined`,
 	}
 )
 
