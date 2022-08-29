@@ -26,7 +26,6 @@ func NewDefaultConfig(FilePath string) *CslsConfig {
 	cfg := CslsConfig{
 		FilePath: FilePath,
 	}
-	cfg.TemplateEngine = DefaultTemplateEngine(&cfg)
 	if FilePath == "" {
 		return &cfg
 	}

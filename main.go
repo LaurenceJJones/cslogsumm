@@ -43,6 +43,7 @@ func setLogger(Config *CslsConfig) {
 	default:
 		log.SetLevel(log.WarnLevel)
 	}
+	log.Debugf("Logging is set to %s", Config.LogLevel)
 }
 
 func main() {
@@ -58,6 +59,8 @@ func main() {
 			if ConfigFilePath != "" {
 				Config = NewDefaultConfig(ConfigFilePath)
 			}
+			setLogger(Config)
+			Config.TemplateEngine = DefaultTemplateEngine(Config)
 		},
 		Run: func(cmd *cobra.Command, args []string) {
 			err := Config.TemplateEngine.Engine.ExecuteTemplate(os.Stdout, "Main", Config)

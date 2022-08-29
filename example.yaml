@@ -1,6 +1,6 @@
 mode: stdout
 cs_config_path: ./config.yaml
-log_level: debug
+log_level: error
 format: |
   {{ template "default" }}
   You have {{ .DbClient.TotalAlerts }} alerts
