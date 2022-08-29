@@ -6,7 +6,6 @@ import (
 	"path"
 	"path/filepath"
 	"strings"
-	"text/template"
 
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
@@ -45,10 +44,7 @@ func main() {
 			}
 		},
 		Run: func(cmd *cobra.Command, args []string) {
-			template, _ := template.New("").Parse(Config.Format)
-			b := new(strings.Builder)
-			template.Execute(b, Config.DbClient)
-			log.Info(b.String())
+			Config.TemplateEngine.Engine.ExecuteTemplate(os.Stdout, "Main", Config.DbClient)
 		},
 	}
 	var cmdDocGen = &cobra.Command{
@@ -65,6 +61,9 @@ func main() {
 	}
 	rootCmd.PersistentFlags().StringVarP(&ConfigFilePath, "config", "c", "", "path to config file")
 	rootCmd.AddCommand(cmdDocGen)
+	log.SetLevel(log.ErrorLevel)
+	logFormatter := &log.TextFormatter{TimestampFormat: "02-01-2006 03:04:05 PM", FullTimestamp: true}
+	log.SetFormatter(logFormatter)
 	if err := rootCmd.Execute(); err != nil {
 		exitCode := 1
 		log.NewEntry(log.StandardLogger()).Log(log.FatalLevel, err)
