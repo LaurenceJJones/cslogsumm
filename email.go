@@ -42,6 +42,9 @@ type Email struct {
 }
 
 func NewEmailClient(c *CslsConfig) *Email {
+	if c.EmailClient == nil {
+		return nil
+	}
 	S := Email{
 		Server: &mail.SMTPServer{
 			Host:           c.EmailSettings.SMTPHost,
