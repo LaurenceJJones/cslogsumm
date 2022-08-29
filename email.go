@@ -42,7 +42,7 @@ type Email struct {
 }
 
 func NewEmailClient(c *CslsConfig) *Email {
-	if c.EmailClient == nil {
+	if c.EmailSettings == nil {
 		return nil
 	}
 	S := Email{
