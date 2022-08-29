@@ -26,6 +26,10 @@ func NewDefaultConfig(FilePath string) *CslsConfig {
 	cfg := CslsConfig{
 		FilePath: FilePath,
 	}
+	cfg.TemplateEngine = DefaultTemplateEngine(&cfg)
+	if FilePath == "" {
+		return &cfg
+	}
 	readYAML(FilePath, &cfg)
 	if cfg.CsConfigPath != "" {
 		readYAML(cfg.CsConfigPath, &cfg.CsConfig)
@@ -36,7 +40,6 @@ func NewDefaultConfig(FilePath string) *CslsConfig {
 	if cfg.DbConfig != nil {
 		cfg.LoadDbIfExist(cfg.DbConfig)
 	}
-	cfg.TemplateEngine = DefaultTemplateEngine(&cfg)
 	return &cfg
 }
 
