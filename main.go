@@ -56,9 +56,7 @@ func main() {
 		SilenceErrors:     false,
 		SilenceUsage:      true,
 		PersistentPreRun: func(cmd *cobra.Command, args []string) {
-			if ConfigFilePath != "" {
-				Config = NewDefaultConfig(ConfigFilePath)
-			}
+			Config = NewDefaultConfig(ConfigFilePath)
 			setLogger(Config)
 			Config.TemplateEngine = DefaultTemplateEngine(Config)
 		},
