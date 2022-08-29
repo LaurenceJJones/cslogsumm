@@ -29,6 +29,22 @@ title: %s
 func linkHandler(name string) string {
 	return fmt.Sprintf("/cslogsumm/%s", name)
 }
+
+func setLogger(Config *CslsConfig) {
+	logFormatter := &log.TextFormatter{TimestampFormat: "02-01-2006 03:04:05 PM", FullTimestamp: true}
+	log.SetFormatter(logFormatter)
+	switch strings.ToLower(Config.LogLevel) {
+	case "error":
+		log.SetLevel(log.ErrorLevel)
+	case "info":
+		log.SetLevel(log.InfoLevel)
+	case "debug":
+		log.SetLevel(log.DebugLevel)
+	default:
+		log.SetLevel(log.WarnLevel)
+	}
+}
+
 func main() {
 
 	var rootCmd = &cobra.Command{
@@ -44,7 +60,10 @@ func main() {
 			}
 		},
 		Run: func(cmd *cobra.Command, args []string) {
-			Config.TemplateEngine.Engine.ExecuteTemplate(os.Stdout, "Main", Config.DbClient)
+			err := Config.TemplateEngine.Engine.ExecuteTemplate(os.Stdout, "Main", Config)
+			if err != nil {
+				log.Debug(err.Error())
+			}
 		},
 	}
 	var cmdDocGen = &cobra.Command{
@@ -61,9 +80,7 @@ func main() {
 	}
 	rootCmd.PersistentFlags().StringVarP(&ConfigFilePath, "config", "c", "", "path to config file")
 	rootCmd.AddCommand(cmdDocGen)
-	log.SetLevel(log.ErrorLevel)
-	logFormatter := &log.TextFormatter{TimestampFormat: "02-01-2006 03:04:05 PM", FullTimestamp: true}
-	log.SetFormatter(logFormatter)
+
 	if err := rootCmd.Execute(); err != nil {
 		exitCode := 1
 		log.NewEntry(log.StandardLogger()).Log(log.FatalLevel, err)

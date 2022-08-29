@@ -32,6 +32,9 @@ func DefaultTemplateEngine(Config *CslsConfig) *TemplateEngine {
 		log.Infof("Loading %s with %s as value", key, val)
 		T.Engine.New(key).Parse(val)
 	}
-	T.Engine.New("Main").Parse(Config.Format)
+	_, err := T.Engine.New("Main").Parse(Config.Format)
+	if err != nil {
+		log.Debug(err.Error())
+	}
 	return &T
 }

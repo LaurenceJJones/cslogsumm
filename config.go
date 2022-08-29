@@ -19,6 +19,7 @@ type CslsConfig struct {
 	Format          string                `yaml:"format,omitempty"`
 	CustomTemplates []CustomTemplate      `yaml:"custom_templates,omitempty"`
 	TemplateEngine  *TemplateEngine       `yaml:"-"`
+	LogLevel        string                `yaml:"log_level,omitempty"`
 }
 
 func NewDefaultConfig(FilePath string) *CslsConfig {

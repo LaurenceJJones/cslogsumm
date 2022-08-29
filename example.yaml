@@ -1,9 +1,10 @@
 mode: stdout
 cs_config_path: ./config.yaml
-log_level: error
+log_level: debug
 format: |
   {{ template "default" }}
-  You have {{ .TotalAlerts }} alerts
+  You have {{ .DbClient.TotalAlerts }} alerts
+  {{ .DbClient.GetAlertByID 3390 }}
 #db_config:
 # type: sqlite
 #db_path: crowdsec.db
